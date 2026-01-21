@@ -1,0 +1,8 @@
+notification-service:
+  build:  ./src/services/notification-service
+  ports:
+    - "5005:5005"
+  env_file:
+    - ./services/notification-service/.env
+  networks:
+    - backend
