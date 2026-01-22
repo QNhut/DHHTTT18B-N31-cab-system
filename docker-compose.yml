@@ -1,0 +1,20 @@
+services:
+   payment-service:
+    build:
+      context: ./services/payment-service
+    container_name: payment-service
+    env_file:
+      - ./services/payment-service/.env.example
+    ports:
+      - "8088:8088"  # nếu bạn muốn gọi thẳng từ host để test
+    expose:
+      - "8088"
+    networks:
+      - cab-net
+
+networks:
+  cab-net:
+    driver: bridge
+
+volumes:
+  pgdata:
