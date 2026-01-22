@@ -1,4 +1,5 @@
 # CAB-BOOKING-SYSTEM
+<<<<<<< HEAD
 
 ## 📁 Cấu trúc thư mục
 
@@ -138,3 +139,5 @@ git fetch
 # Xóa nhánh local
 git branch -d ten-nhanh
 ```
+=======
+>>>>>>> e7901b3 (Initial commit - remove submodule)
