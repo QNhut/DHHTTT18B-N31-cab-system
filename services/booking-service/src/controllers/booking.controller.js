@@ -1,40 +1,25 @@
-const { v4: uuidv4 } = require('uuid');
-const BookingModel = require('../models/booking.model');
-const PricingService = require('../services/pricing.mock');
-const BookingEvent = require('../events/booking.event');
+const bookingService = require("../services/booking.service");
 
-exports.createBooking = (req, res) => {
-  const { userId, pickup, destination } = req.body;
-
-  if (!userId || !pickup || !destination) {
-    return res.status(400).json({
-      message: 'Missing required fields'
-    });
+exports.createBooking = async (req, res) => {
+  try {
+    const booking = await bookingService.createBooking(req.body);
+    res.status(201).json(booking);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
-
-  const fare = PricingService.calculateFare(pickup, destination);
-
-  const booking = {
-    id: uuidv4(),
-    userId,
-    pickup,
-    destination,
-    fare,
-    status: 'CREATED',
-    createdAt: new Date()
-  };
-
-  BookingModel.create(booking);
-
-  // publish event
-  BookingEvent.publishBookingCreated(booking);
-
-  res.status(201).json({
-    message: 'Booking created successfully',
-    booking
-  });
 };
 
-exports.getBookings = (req, res) => {
-  res.json(BookingModel.findAll());
+exports.getBookingById = async (req, res) => {
+  const booking = bookingService.getBookingById(req.params.id);
+  if (!booking) {
+    return res.status(404).json({ error: "Booking not found" });
+  }
+  res.json(booking);
 };
+
+
+exports.getAllBookings = (req, res) => {
+  const bookings = bookingService.getAllBookings();
+  res.json(bookings);
+};
+
